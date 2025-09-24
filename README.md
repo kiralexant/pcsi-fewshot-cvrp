@@ -1,35 +1,243 @@
-# Parameter Control Strategy Inference for Randomized-Heuristic-Search Applied to CVRP
+# PCSI-FewShot-CVRP: Parameter Control Strategy Inference for Few-Shot Randomized Heuristic Search Applied to CVRP
+**Short name:** **PCSI‑CVRP**
+
+[![Python ≥3.10](https://img.shields.io/badge/Python-%E2%89%A53.10-blue)](https://www.python.org/)
+[![Code style: Black](https://img.shields.io/badge/code%20style-Black-000000.svg)](https://github.com/psf/black)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#license)
+
+**PCSI-FewShot-CVRP** learns a **parameter‑control strategy** for a **few‑shot** **(1+λ) evolutionary algorithm** solving **CVRP**.  
+The control policy is a **neural network** trained with **Kernel‑PCA‑assisted Bayesian Optimization (KPCA‑BO)** on problem instances, and then applied inside the few-shot (1+λ) evolutionary algorithm to new instances.  
 
 
-## Installation
+> ℹ️ The (1+λ)-EA is **few-shot**, meaning that it has large λ and works in few generations to exploit parallel hardware.
 
-Clone the repository and install in editable mode (development), so changes in Python code take effect immediately without reinstalling:
-```bash
-git clone --recurse-submodules https://github.com/kiralexant/FewShotCVRP.git
-cd FewShotCVRP
-python -m pip install -e .
-```
+> ℹ️ The (1+λ)-EA here serves as an **illustrative proxy** of a practical EA. The repository emphasizes **policy inference** for CVRP; the EA is intentionally simple to keep the learning pipeline transparent.
 
 ---
 
-## Recompiling Only the C++ Extension
+## Overview (English)
 
-If you change only the C++ code and want to rebuild without reinstalling the package:
+**Key modules**
+- **Training** policy on instances: `FewShotCVRP/examples/params_search/nn_parallel_kpcabo.py`
+- **Loading** trained policies: `FewShotCVRP/dataset/theta_control_loader.py`
+- **Few‑shot solver** using a learned policy: `FewShotCVRP/few_shot.py`
+
+**Dependencies** (declared in `pyproject.toml`): `numpy`, `numba`, `pytest`, `rich`, `matplotlib`, `pandas`, `pyarrow`, `seaborn`, `scikit‑learn`, `scipy`, `torch`, `botorch`, `gpytorch`.
+
+---
+
+## Installation
+
+Clone this repository and install in editable mode:
+
+```bash
+git clone --recurse-submodules https://github.com/kiralexant/pcsi-fewshot-cvrp.git
+cd pcsi-fewshot-cvrp
+python -m pip install -e .
+```
+
+Rebuild only the C++ extension (if you changed just the C++ code):
+
 ```bash
 python setup.py build_ext --inplace
 ```
 
----
+Initialize submodules:
 
-## Fetching External Dependencies
-
-Clone the external repository as a dependancy:
 ```bash
 git submodule update --init --recursive
 ```
 
+> Python **≥3.10** is required. GPU is supported where available by the libraries you install (see `pyproject.toml`).
+
+---
+
+## Project layout (selected files)
+
+```
+pcsi-fewshot-cvrp/
+├─ FewShotCVRP/
+│  ├─ examples/
+│  │  └─ params_search/
+│  │     └─ nn_parallel_kpcabo.py    # Train θ‑control policy via KPCA‑BO (no CLI args; configure in-file)
+│  ├─ dataset/
+│  │  └─ theta_control_loader.py     # Interface to load/use trained policies
+│  ├─ few_shot.py                    # Few‑shot (1+λ)‑EA that uses a learned policy
+│  └─ ...
+├─ tests/
+├─ pyproject.toml
+├─ setup.py
+└─ README.md
+```
+
+---
+
+## How to use
+
+### 1) Train the parameter‑control policy on the **current** CVRP setup
+1. Open `FewShotCVRP/examples/params_search/nn_parallel_kpcabo.py`.
+2. Configure training instances and algorithm settings **inside the file** (there are no command‑line arguments).
+3. Run it as a module (no options needed):
+   ```bash
+   cd FewShotCVRP/examples
+   bash runbg.sh -- python params_search/nn_parallel_kpcabo.py
+   ```
+   This will start the KPCA‑BO training loop using the in‑file configuration. Check the run directory/logs as configured inside the script.
+
+### 2) Apply a trained policy in the **few‑shot** (1+λ)‑EA solver
+1. Ensure your trained policy is saved (see how checkpoints are written in the training script).
+2. Use the loader API from `FewShotCVRP/dataset/theta_control_loader.py` to obtain the policy object.
+3. Use `FewShotCVRP/few_shot.py` to run the few‑shot solver that consumes the loaded policy.  
+   You can run it as a module (if it defines a default demo) or import it and call the function/class provided in the file:
+   ```python
+   res = few_shot.few_shot_optimization(
+      "X-n641-k35.xml",
+      random_seed=2025,
+      numproc=50,
+      subsequent_local_opt=True,
+      local_opt_budget_fraction=0.01,
+   )
+   ```
+
+### 3) Adapting to a **new** CVRP dataset
+- Duplicate/modify the configuration block inside `nn_parallel_kpcabo.py` to point to your new dataset/instances.
+- Re‑run the training module as above.  
+- Use the resulting policy with `few_shot.py` following the same pattern.
+
+> **Few‑shot regime:** use a large λ and a small number of generations; the learned policy handles rapid adaptation.
+
+---
+
+## Reproducibility & performance
+- Random seeds are fixed inside scripts to make runs reproducible.
+- The codebase includes C++ kernels / JIT'ed hot paths (see source files) to accelerate heavy parts.
+- GPU support depends on your installed PyTorch/BoTorch/GPyTorch builds.
+
+---
+
+## Citing
+
+If you use this repository, please cite:
+
+- Antonov, K., Raponi, E., Wang, H., & Doerr, C. **High Dimensional Bayesian Optimization with Kernel Principal Component Analysis**. _PPSN XVII_, Springer, 2022, 118–131.  
 
 ---
 
 ## License
-This project is licensed under the MIT License.
+
+**MIT License**
+
+---
+
+# 🇷🇺 Русская версия
+
+**PCSI-FewShot-CVRP** обучает **стратегию управления параметрами** для **few-shot** **(1+λ) эволюционного алгоритма**, решающего **CVRP**.  
+Стратегия управления — это **нейронная сеть**, обучаемая с помощью **байесовской оптимизации с Kernel-PCA (KPCA-BO)** на инстансах задачи и затем применяемая внутри few-shot (1+λ) эволюционного алгоритма к новым инстансам.  
+
+> ℹ️ (1+λ)-EA — **few-shot**, то есть использует большое λ и работает в малом числе поколений, чтобы эффективно задействовать параллельные вычислительные ресурсы.
+
+> ℹ️ (1+λ)-EA здесь служит **иллюстративным примером** практического ЭА. В репозитории основной акцент сделан на **выводе стратегии (policy inference)** для CVRP; сам ЭА намеренно упрощён, чтобы сделать процесс обучения прозрачным.
+
+---
+
+## Ключевые модули
+- **Обучение** стратегии: `FewShotCVRP/examples/params_search/nn_parallel_kpcabo.py`
+- **Загрузка** обученных стратегий: `FewShotCVRP/dataset/theta_control_loader.py`
+- **Few‑shot решатель**: `FewShotCVRP/few_shot.py`
+
+**Зависимости** (в `pyproject.toml`): `numpy`, `numba`, `pytest`, `rich`, `matplotlib`, `pandas`, `pyarrow`, `seaborn`, `scikit‑learn`, `scipy`, `torch`, `botorch`, `gpytorch`.
+
+---
+
+## Установка
+
+```bash
+git clone --recurse-submodules https://github.com/kiralexant/pcsi-fewshot-cvrp.git
+cd pcsi-fewshot-cvrp
+python -m pip install -e .
+```
+
+Пересборка только C++‑расширения:
+
+```bash
+python setup.py build_ext --inplace
+```
+
+Инициализация submodules:
+
+```bash
+git submodule update --init --recursive
+```
+
+> Нужен Python **≥3.10**. Поддержка GPU — в зависимости от установленных библиотек (см. `pyproject.toml`).
+
+---
+
+## Структура проекта (выборка)
+
+```
+pcsi-fewshot-cvrp/
+├─ FewShotCVRP/
+│  ├─ examples/
+│  │  └─ params_search/
+│  │     └─ nn_parallel_kpcabo.py
+│  ├─ dataset/
+│  │  └─ theta_control_loader.py
+│  ├─ few_shot.py
+│  └─ ...
+├─ tests/
+├─ pyproject.toml
+├─ setup.py
+└─ README.md
+```
+
+---
+
+## Как пользоваться
+
+### 1) Обучение стратегии на **текущей** задаче
+1. Откройте `FewShotCVRP/examples/params_search/nn_parallel_kpcabo.py`.
+2. Настройте инстансы и параметры **внутри файла**.
+3. Запустите модуль:
+   ```bash
+   cd FewShotCVRP/examples
+   bash runbg.sh -- python params_search/nn_parallel_kpcabo.py
+   ```
+
+### 2) Применение обученной стратегии в **few‑shot** решателе (1+λ)‑ЭА
+1. Загрузите стратегию через `FewShotCVRP/dataset/theta_control_loader.py`.
+2. Используйте `FewShotCVRP/few_shot.py` для запуска few‑shot решателя на новой задаче CVRP из датасета.
+   ```python
+   res = few_shot.few_shot_optimization(
+      "X-n641-k35.xml",
+      random_seed=2025,
+      numproc=50,
+      subsequent_local_opt=True,
+      local_opt_budget_fraction=0.01,
+   )
+   ```
+
+### 3) Новая dataset задач CVRP
+- Измените конфигурацию в `nn_parallel_kpcabo.py` под новый датасет.
+- Перезапустите обучение и используйте полученную стратегию с `few_shot.py`.
+
+> **Few‑shot:** большое λ, мало поколений; быстрая адаптация за счёт выученной политики.
+
+---
+
+## Воспроизводимость и производительность
+- Random seed фиксируются в скриптах для воспроизводимости.
+- Быстрые участки реализованы на C++/JIT
+- Подразумевается поддержка обучения на GPU, если он доступен.
+
+---
+
+## Цитирование
+
+- Antonov, K., Raponi, E., Wang, H., & Doerr, C. **High Dimensional Bayesian Optimization with Kernel Principal Component Analysis**. _PPSN XVII_, Springer, 2022, 118–131.  
+
+---
+
+## Лицензия
+
+**MIT**
