@@ -1,9 +1,21 @@
-# PCSI-FewShot-CVRP: Parameter Control Strategy Inference for Few-Shot Randomized Heuristic Search Applied to CVRP
-**Short name:** **PCSI‑CVRP**
+<div align="center">
 
-[![Python ≥3.10](https://img.shields.io/badge/Python-%E2%89%A53.10-blue)](https://www.python.org/)
-[![Code style: Black](https://img.shields.io/badge/code%20style-Black-000000.svg)](https://github.com/psf/black)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#license)
+# PCSI-FewShot-CVRP:<br>Parameter Control Strategy Inference for<br>Few-Shot Randomized Heuristic Search<br>Applied to CVRP
+
+</div>
+
+
+<div align="center">
+
+  <a href="https://mit-license.org/"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a>
+  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10+-blue.svg" alt="Python version"></a>
+  <a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Code style: black"></a>
+  <a href="https://git.liacs.nl/antonovk/basinsattribution"><img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg" alt="Contributions welcome"></a>
+</div>
+
+
+## Overview
+
 
 **PCSI-FewShot-CVRP** learns a **parameter‑control strategy** for a **few‑shot** **(1+λ) evolutionary algorithm** solving **CVRP**.  
 The control policy is a **neural network** trained with **Kernel‑PCA‑assisted Bayesian Optimization (KPCA‑BO)** on problem instances, and then applied inside the few-shot (1+λ) evolutionary algorithm to new instances.  
@@ -13,16 +25,15 @@ The control policy is a **neural network** trained with **Kernel‑PCA‑assiste
 
 > ℹ️ The (1+λ)-EA here serves as an **illustrative proxy** of a practical EA. The repository emphasizes **policy inference** for CVRP; the EA is intentionally simple to keep the learning pipeline transparent.
 
----
 
-## Overview (English)
-
-**Key modules**
+## Key modules
 - **Training** policy on instances: `FewShotCVRP/examples/params_search/nn_parallel_kpcabo.py`
 - **Loading** trained policies: `FewShotCVRP/dataset/theta_control_loader.py`
 - **Few‑shot solver** using a learned policy: `FewShotCVRP/few_shot.py`
 
 **Dependencies** (declared in `pyproject.toml`): `numpy`, `numba`, `pytest`, `rich`, `matplotlib`, `pandas`, `pyarrow`, `seaborn`, `scikit‑learn`, `scipy`, `torch`, `botorch`, `gpytorch`.
+
+
 
 ---
 
