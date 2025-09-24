@@ -1,0 +1,3 @@
+[submodule "external/HillVallEA"]
+	path = external/HillVallEA
+	url = https://github.com/AntKirill/HillVallEA.git

@@ -1,0 +1,79 @@
+{
+    "random_seed": 2025,
+    "cvrp_instances": [
+        "X-n101-k25.xml",
+        "X-n209-k16.xml",
+        "X-n641-k35.xml"
+    ],
+    "simulation": {
+        "ea_window_size": 5,
+        "ea_generations_number": 50,
+        "ea_lambda": 20000,
+        "ea_mutation_operator": "FewShotCVRP.ea.mutate_shift_2opt_fast_fast",
+        "in_dim": 10,
+        "hidden_dims": [
+            15
+        ],
+        "theta_min": 1.0,
+        "theta_max": 100.0,
+        "activation": "torch.nn.SiLU"
+    },
+    "parallel": {
+        "num_procs": 100
+    },
+    "bo": {
+        "n_init": null,
+        "n_iter": 50,
+        "sigma": 600,
+        "kernel": "matern",
+        "matern_nu": 2.5,
+        "kernel_isotropic": false,
+        "use_input_normalize": true,
+        "normalize_y": true,
+        "add_vanilla_bo_prior": true,
+        "acq_function": "logEI",
+        "n_init_samples_acq_opt": 10000,
+        "n_restarts_acq_opt": 100,
+        "suggestions_per_step": 30,
+        "diversity_frac": 0.1,
+        "doe_method": "precomputed",
+        "mll_fit_config": {
+            "sigma0": null,
+            "maxfevals_cma": 2000,
+            "maxfevals_grad": 2000,
+            "grad_timeout_sec": 300.0,
+            "tolx_cma": 1e-10,
+            "tolfun_cma": 1e-3,
+            "tolfunhist_cma": 1e-5,
+            "tolfun_grad": 1e-5,
+            "tolgrad_grad": 1e-6,
+            "ls_bounds": [
+                1e-3,
+                1e4
+            ],
+            "os_bounds": [
+                1e-4,
+                1e4
+            ],
+            "noise_bounds": [
+                1e-1,
+                1e4
+            ],
+            "mean_bounds": [
+                -1e3,
+                1e3
+            ],
+            "period_bounds": [
+                1e-4,
+                1e4
+            ],
+            "refine_with_grad": true,
+            "init_lengthscales_with_vanilla_bo": true,
+            "verbose": false
+        }
+    },
+    "paths": {
+        "cur_root_path": null,
+        "strip_xml_extension": true
+    }
+}

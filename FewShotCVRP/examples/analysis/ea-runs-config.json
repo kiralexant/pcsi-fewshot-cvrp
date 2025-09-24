@@ -1,0 +1,33 @@
+{
+    "output_dir": "ea_runs",
+    "raw_file": "raw_runs.parquet",
+    "stats_file": "aggregated_stats.parquet",
+    "theta_snapshot_dir": null,
+    "nn_trained_on_instance": null,
+    "nn_training_method": null,
+    "instances": [
+        "X-n101-k25.xml",
+        "X-n209-k16.xml",
+        "X-n641-k35.xml"
+    ],
+    "algorithms": [
+        "few_shot"
+    ],
+    "num_runs_per_combo": 100,
+    "simulation_rng_seed": 2025,
+    "num_procs": 100,
+    "ea": {
+        "ea_window_size": 5,
+        "ea_generations_number": 50,
+        "ea_lambda_": 20000
+    },
+    "nn": {
+        "in_dim": 10,
+        "hidden_dims": [
+            15
+        ],
+        "theta_min": 1.0,
+        "theta_max": 100.0,
+        "activation": "SiLU"
+    }
+}

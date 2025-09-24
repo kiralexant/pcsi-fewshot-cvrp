@@ -1,0 +1,33 @@
+{
+    "random_seed": 2,
+    "cvrp_instances": [
+        "X-n101-k25.xml",
+        "X-n209-k16.xml",
+        "X-n641-k35.xml",
+        "X-n1001-k43.xml"
+    ],
+    "simulation": {
+        "ea_window_size": 5,
+        "ea_generations_number": 50,
+        "ea_lambda": 20000,
+        "ea_mutation_operator": "FewShotCVRP.ea.mutate_shift_2opt_fast_fast",
+        "in_dim": 10,
+        "hidden_dims": [
+            15
+        ],
+        "theta_min": 1.0,
+        "theta_max": 100.0,
+        "activation": "torch.nn.SiLU"
+    },
+    "parallel": {
+        "num_procs": 200
+    },
+    "rs": {
+        "n_iter": 2000,
+        "doe_method": "sobol"
+    },
+    "paths": {
+        "cur_root_path": null,
+        "strip_xml_extension": true
+    }
+}

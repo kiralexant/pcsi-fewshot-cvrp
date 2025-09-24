@@ -1,0 +1,40 @@
+{
+    "models": [
+        {
+            "snapshot_path": "X-n101-k25/kpca_bo",
+            "nn_trained_on_instance": "X-n101-k25.xml",
+            "nn_training_method": "kpca-bo"
+        },
+        {
+            "snapshot_path": "X-n209-k16/kpca_bo",
+            "nn_trained_on_instance": "X-n209-k16.xml",
+            "nn_training_method": "kpca-bo"
+        },
+        {
+            "snapshot_path": "X-n641-k35/kpca_bo",
+            "nn_trained_on_instance": "X-n641-k35.xml",
+            "nn_training_method": "kpca-bo"
+        }
+    ],
+    "nn": {
+        "in_dim": 10,
+        "hidden_dims": [
+            15
+        ],
+        "theta_min": 1.0,
+        "theta_max": 100.0,
+        "activation": "SiLU"
+    },
+    "ea": {
+        "ea_window_size": 5,
+        "ea_generations_number": 50,
+        "ea_lambda_": 20000,
+        "theta_schedule_window": [
+            100.0,
+            100.0,
+            50.0,
+            50.0,
+            20.0
+        ]
+    }
+}
