@@ -14,7 +14,7 @@
 </div>
 
 
-## Overview
+## Overview (English, см. русскую версию ниже)
 
 
 **PCSI-FewShot-CVRP** learns a **parameter‑control strategy** for a **few‑shot** **(1+λ) evolutionary algorithm** solving **CVRP**.  
