@@ -20,6 +20,15 @@
 **PCSI-FewShot-CVRP** learns a **parameter‑control strategy** for a **few‑shot** **(1+λ) evolutionary algorithm** solving **CVRP**.  
 The control policy is a **neural network** trained with **Kernel‑PCA‑assisted Bayesian Optimization (KPCA‑BO)** on problem instances, and then applied inside the few-shot (1+λ) evolutionary algorithm to new instances.  
 
+<div align="center">
+
+![I_target](imgs/train-test-instances-post.png)
+
+</div>
+Figure: *Performance of the \((1+\lambda)\)-EA with the proposed \(\theta\)-control (blue) vs. state-independent/static baselines: linear schedule \(\theta: 100\!\to\!1\) (orange), fixed \(\theta=1\) (green), fixed \(\theta=10\) (red). Curves show best-so-far objective \(f(x)\) vs. number of function evaluations (×10⁶). Shaded ribbons denote **standard deviation** across runs. Each algorithm was run **100 times**. Green checkmarks indicate cases where the proposed method achieves the best performance within the given budget. Top row: training instances. Bottom row: previously unseen test instances.*
+
+*Производительность \((1+\lambda)\)-ЭА с предлагаемым управлением \(\theta\) (синий) по сравнению с базовыми, не зависящими от состояния, стратегиями: линейное расписание \(\theta: 100\!\to\!1\) (оранжевый), фиксированное \(\theta=1\) (зелёный), фиксированное \(\theta=10\) (красный). Показано лучшее на текущий момент \(f(x)\) в зависимости от числа вычислений (×10⁶). Полупрозрачные ленты — **стандартное отклонение** по запускам. Для каждого алгоритма выполнено **100 запусков**. Зелёные галочки отмечают случаи, когда предлагаемый метод даёт лучший результат при заданном бюджете. Верхний ряд — обучающие инстансы, нижний — ранее невиданные тестовые инстансы.*
+
 
 > ℹ️ The (1+λ)-EA is **few-shot**, meaning that it has large λ and works in few generations to exploit parallel hardware.
 
@@ -144,6 +153,13 @@ If you use this repository, please cite:
 
 **PCSI-FewShot-CVRP** обучает **стратегию управления параметрами** для **few-shot** **(1+λ) эволюционного алгоритма**, решающего **CVRP**.  
 Стратегия управления — это **нейронная сеть**, обучаемая с помощью **байесовской оптимизации с Kernel-PCA (KPCA-BO)** на инстансах задачи и затем применяемая внутри few-shot (1+λ) эволюционного алгоритма к новым инстансам.  
+
+<div align="center">
+
+![I_target](imgs/train-test-instances-post.png)
+
+</div>
+Рисунок: *Производительность \((1+\lambda)\)-ЭА с предлагаемым управлением \(\theta\) (синий) по сравнению с базовыми, не зависящими от состояния, стратегиями: линейное расписание \(\theta: 100\!\to\!1\) (оранжевый), фиксированное \(\theta=1\) (зелёный), фиксированное \(\theta=10\) (красный). Показано лучшее на текущий момент \(f(x)\) в зависимости от числа вычислений (×10⁶). Полупрозрачные ленты — **стандартное отклонение** по запускам. Для каждого алгоритма выполнено **100 запусков**. Зелёные галочки отмечают случаи, когда предлагаемый метод даёт лучший результат при заданном бюджете. Верхний ряд — обучающие инстансы, нижний — ранее невиданные тестовые инстансы.*
 
 > ℹ️ (1+λ)-EA — **few-shot**, то есть использует большое λ и работает в малом числе поколений, чтобы эффективно задействовать параллельные вычислительные ресурсы.
 
