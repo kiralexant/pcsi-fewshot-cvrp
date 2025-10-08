@@ -205,6 +205,41 @@ def _run_algorithm_once(
             mutation=cfg.ea_mutation_operator,
             verbose=False,
         )
+    elif cfg.algorithm_name == "theta_voting_scaled":
+        res = ea.one_plus_lambda_ea_voting(
+            simulation.get_cvrp_instance(cfg.cvrp_instance_name),
+            theta=100.0,
+            lambda_=cfg.ea_lambda_,
+            max_evals=max_evals,
+            generations_number=cfg.ea_generations_number,
+            seed=seed,
+            mutation=ea.mutate_shift_2opt_fast_fast,
+            verbose=False,
+            scale_quorum=True,
+        )
+    elif cfg.algorithm_name == "theta_voting":
+        res = ea.one_plus_lambda_ea_voting(
+            simulation.get_cvrp_instance(cfg.cvrp_instance_name),
+            theta=100.0,
+            lambda_=cfg.ea_lambda_,
+            max_evals=max_evals,
+            generations_number=cfg.ea_generations_number,
+            seed=seed,
+            mutation=ea.mutate_shift_2opt_fast_fast,
+            verbose=False,
+            scale_quorum=False,
+        )   
+    elif cfg.algorithm_name == "theta_one_fifth":
+        res = ea.one_plus_lambda_ea_with_one_fifth_success(
+            simulation.get_cvrp_instance(cfg.cvrp_instance_name),
+            theta=100.0,
+            lambda_=cfg.ea_lambda_,
+            max_evals=max_evals,
+            generations_number=cfg.ea_generations_number,
+            seed=seed,
+            mutation=ea.mutate_shift_2opt_fast_fast,
+            verbose=False,
+        )      
     else:
         raise ValueError(f"Unknown algorithm_name: {cfg.algorithm_name}")
 
